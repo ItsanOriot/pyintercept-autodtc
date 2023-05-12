@@ -142,6 +142,23 @@ def listen_to_keyboard() -> int:
     finally:
         context._destroy_context()
 
+def detect_keyboard() -> int:
+    """
+    Automatically detects your keyboard after one keyboard input
+    """
+    context = Interception()
+    context.set_filter(context.is_keyboard, FilterKeyState.FILTER_KEY_ALL)
+
+    print("Press any key")
+    try:
+        while True:
+            device = context.wait()
+            stroke = context.receive(device)
+            print("Keypress detected. Keyboard set.")
+            return device
+    finally:
+        context._destroy_context()
+
 
 def listen_to_mouse() -> int:
     """Captures mouse movements / clicks until the `Escape` key is pressed.
@@ -169,6 +186,22 @@ def listen_to_mouse() -> int:
     finally:
         context._destroy_context()
 
+def detect_mouse() -> int:
+    """
+    Automatically detects your mouth after one keyboard input
+    """
+    context = Interception()
+    context.set_filter(context.is_mouse, FilterMouseState.FILTER_MOUSE_ALL)
+
+    print("Please click or move your mouse")
+    try:
+        while True:
+            device = context.wait()
+            stroke = context.receive(device)
+            print("Mouse input detected. Mouse set.")
+            return device
+    finally:
+        context._destroy_context()
 
 def move_to(x: int | tuple[int, int], y: Optional[int] = None) -> None:
     """Moves to a given position."""
